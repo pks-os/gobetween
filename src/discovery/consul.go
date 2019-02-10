@@ -7,16 +7,15 @@
 package discovery
 
 import (
-	"fmt"
-	"net/http"
-	"strings"
-	"time"
-
 	"../config"
 	"../core"
 	"../logging"
 	"../utils"
+	"fmt"
 	consul "github.com/hashicorp/consul/api"
+	"net/http"
+	"strings"
+	"time"
 )
 
 const (
@@ -45,7 +44,7 @@ func consulFetch(cfg config.DiscoveryConfig) (*[]core.Backend, error) {
 
 	log := logging.For("consulFetch")
 
-	log.Debug("Fetching ", cfg)
+	log.Info("Fetching ", cfg)
 
 	// Prepare vars for http client
 	// TODO move http & consul client creation to constructor
@@ -116,7 +115,7 @@ func consulFetch(cfg config.DiscoveryConfig) (*[]core.Backend, error) {
 		} else {
 			host = entry.Node.Address
 		}
-
+		
 		backends = append(backends, core.Backend{
 			Target: core.Target{
 				Host: host,

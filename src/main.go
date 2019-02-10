@@ -5,12 +5,6 @@
 package main
 
 import (
-	"log"
-	"math/rand"
-	"os"
-	"runtime"
-	"time"
-
 	"./api"
 	"./cmd"
 	"./config"
@@ -19,6 +13,11 @@ import (
 	"./manager"
 	"./metrics"
 	"./utils/codec"
+	"log"
+	"math/rand"
+	"os"
+	"runtime"
+	"time"
 )
 
 /**

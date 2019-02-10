@@ -7,12 +7,11 @@
 package stats
 
 import (
-	"fmt"
-	"time"
-
 	"../core"
 	"../metrics"
 	"./counters"
+	"fmt"
+	"time"
 )
 
 const (

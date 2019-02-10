@@ -228,7 +228,6 @@ func (this *Scheduler) HandleBackendLiveChange(target core.Target, live bool) {
  * Update backends map
  */
 func (this *Scheduler) HandleBackendsUpdate(backends []core.Backend) {
-	log := logging.For("scheduler")
 
 	// first mark all existing backends as not discovered
 	for _, b := range this.backends {
@@ -240,7 +239,6 @@ func (this *Scheduler) HandleBackendsUpdate(backends []core.Backend) {
 
 		if ok {
 			// if we have this backend, update it's discovery properties
-			log.Info(fmt.Sprintf("Added Backend %s/%s:%s", this.StatsHandler.Name, b.Host, b.Port))
 			oldB.MergeFrom(b)
 			// mark found backend as discovered
 			oldB.Stats.Discovered = true
@@ -257,7 +255,7 @@ func (this *Scheduler) HandleBackendsUpdate(backends []core.Backend) {
 		if b.Stats.Discovered || b.Stats.ActiveConnections > 0 {
 			continue
 		}
-		log.Info(fmt.Sprintf("Removed Backend %s/%s:%s", this.StatsHandler.Name, b.Host, b.Port))
+
 		metrics.RemoveBackend(this.StatsHandler.Name, b)
 
 		delete(this.backends, t)
@@ -325,10 +323,7 @@ func (this *Scheduler) HandleOp(op Op) {
 		backend.Stats.ActiveConnections++
 		backend.Stats.TotalConnections++
 	case DecrementConnection:
-		// we should not underflow
-		if backend.Stats.ActiveConnections-1 < backend.Stats.ActiveConnections {
-			backend.Stats.ActiveConnections--
-		}
+		backend.Stats.ActiveConnections--
 	default:
 		log.Warn("Don't know how to handle op ", op.op)
 	}
